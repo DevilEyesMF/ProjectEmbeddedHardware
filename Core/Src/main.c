@@ -196,6 +196,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	MX_LWIP_Process();
 	checkScreensaver();
+	int i = 0; // test
+	// deez nuts
   }
   /* USER CODE END 3 */
 }

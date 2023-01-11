@@ -1,0 +1,4 @@
+../Core/Src/echo_server.c:10:13:echo_close	16	static
+../Core/Src/echo_server.c:18:14:echo_recv	40	static
+../Core/Src/echo_server.c:59:14:echo_accept	24	static
+../Core/Src/echo_server.c:75:6:echo_init	16	static
