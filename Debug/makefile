@@ -71,8 +71,8 @@ all: main-build
 main-build: Project_746_LwIP_LCD.elf secondary-outputs
 
 # Tool invocations
-Project_746_LwIP_LCD.elf Project_746_LwIP_LCD.map: $(OBJS) $(USER_OBJS) C:\projects\CortexM7_CubeIDE\Project_746_LwIP_LCD\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Project_746_LwIP_LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"C:\projects\CortexM7_CubeIDE\Project_746_LwIP_LCD\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Project_746_LwIP_LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Project_746_LwIP_LCD.elf Project_746_LwIP_LCD.map: $(OBJS) $(USER_OBJS) D:\remko\git\ProjectEmbeddedHardware\STM32F746NGHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Project_746_LwIP_LCD.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m7 -T"D:\remko\git\ProjectEmbeddedHardware\STM32F746NGHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Project_746_LwIP_LCD.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv5-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
