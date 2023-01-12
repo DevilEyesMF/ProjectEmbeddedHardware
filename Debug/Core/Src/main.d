@@ -75,6 +75,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/BSP/Inc/ts.h ../Drivers/BSP/Inc/stm32746g_discovery_qspi.h \
  ../Drivers/BSP/Inc/n25q128a.h ../Core/Inc/echo_server.h \
  ../Core/Inc/logo.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/mqtt.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/apps/mqtt_opts.h \
+ ../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/tcp.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/tcpbase.h \
  ../Middlewares/Third_Party/LwIP/src/include/lwip/ip.h \
@@ -164,6 +168,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/BSP/Inc/n25q128a.h:
 ../Core/Inc/echo_server.h:
 ../Core/Inc/logo.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/ip_addr.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/apps/mqtt.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/apps/mqtt_opts.h:
+../Middlewares/Third_Party/LwIP/src/include/lwip/prot/iana.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/tcp.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/tcpbase.h:
 ../Middlewares/Third_Party/LwIP/src/include/lwip/ip.h:

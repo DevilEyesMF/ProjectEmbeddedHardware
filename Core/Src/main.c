@@ -29,6 +29,10 @@
 #include "stm32746g_discovery_qspi.h"
 #include "echo_server.h"
 #include "logo.h"
+#include "ip_addr.h"
+#include "mqtt.h"
+#include "string.h"
+#include "unistd.h"
 
 #define SCREENSAVER_DELAY 30000
 #include "tcp.h"
@@ -62,6 +66,8 @@ SDRAM_HandleTypeDef hsdram1;
 
 /* USER CODE BEGIN PV */
 
+ip_addr_t brokerIP;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -72,6 +78,10 @@ static void MX_USART1_UART_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_FMC_Init(void);
 static void MX_QUADSPI_Init(void);
+static void connect_to_broker(mqtt_client_t *client);
+static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status);
+static void mqtt_sub_request_cb(void *arg, err_t result);
+
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -185,6 +195,18 @@ int main(void)
 		  TM_LOGO_DATA_FORMAT);
   /* Init touch screen */
   BSP_TS_Init(480,272);
+
+  /* Create client */
+  mqtt_client_t *client = mqtt_client_new();
+
+  /* Set IP address */
+  IP_ADDR4(&brokerIP ,192,168,0,137);
+
+  /* Connect client */
+  if (client != NULL) {
+	  connect_to_broker(client);
+  }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -545,6 +567,58 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void  connect_to_broker(mqtt_client_t *client)
+{
+	err_t err;
+	struct mqtt_connect_client_info_t clientInfo;
+	memset(&clientInfo, 0, sizeof(clientInfo));
+
+	clientInfo.client_id = "ledstripSubscriber"; // Set client ID
+	clientInfo.keep_alive = 60;
+
+	err = mqtt_client_connect(client, &brokerIP, 1883, mqtt_connection_cb, 0, &clientInfo);
+
+	if (err != ERR_OK) {
+		if (err == ERR_ISCONN) {
+			printf("Already connected.\n"); // temp for debug
+		} else {
+			printf("mqtt_client_connect return: %d\n", err);
+		}
+	}
+
+}
+
+void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status)
+{
+  err_t err;
+  if(status == MQTT_CONNECT_ACCEPTED) {
+    printf("mqtt_connection_cb: Successfully connected\n");
+
+    /* Setup callback for incoming publish requests */
+    //mqtt_set_inpub_callback(client, mqtt_incoming_publish_cb, mqtt_incoming_data_cb, arg);
+
+    /* Subscribe to a topic named "ledstrip" with QoS level 1, call mqtt_sub_request_cb with result */
+    err = mqtt_subscribe(client, "ledstrip", 1, mqtt_sub_request_cb, arg);
+
+    if(err != ERR_OK) {
+      printf("mqtt_subscribe return: %d\n", err);
+    }
+  } else {
+    printf("mqtt_connection_cb: Disconnected, reason: %d\n", status);
+
+    /* Its more nice to be connected, so try to reconnect */
+    connect_to_broker(client);
+  }
+}
+
+static void mqtt_sub_request_cb(void *arg, err_t result)
+{
+  /* Just print the result code here for simplicity,
+     normal behaviour would be to take some action if subscribe fails like
+     notifying user, retry subscribe or disconnect from server */
+  printf("Subscribe result: %d\n", result);
+}
 
 /* USER CODE END 4 */
 
